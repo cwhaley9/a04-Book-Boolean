@@ -1,0 +1,43 @@
+.title {
+    font-size: 64px;
+    text-align: center;
+}
+
+.subtitle {
+    font-size: 32px;
+    text-align: center;
+    color: rgb(88, 87, 87);
+}
+
+.fade-in {
+    animation: fadeInAnimation ease 4s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+#book-genre{
+    height: 24px;
+    border-radius: 20px;
+}
+
+.genre-input-container{
+    height: 200px;
+    background-color: red;
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeInAnimation{
+    0%{
+        transform: translateX(-150px);
+        opacity: 0;
+    }
+    100%{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
