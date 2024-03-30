@@ -11,8 +11,19 @@
     <h2 class="subtitle fade-in">Just pick a genre.</h2>
 
     <div class="genre-input-container">
-        <label for="book-genre">Genre</label>
-        <input type="text" id="book-genre" name="genre" size="20">
+
+        <input 
+            type="text" 
+            id="book-genre" 
+            class="center-input" 
+            name="genre" size="40" 
+            placeholder="Genre" 
+            onfocus="removePlaceholder()"
+            onblur="setPlaceholder('Genre')"
+        >
+
     </div>
+
+    <script src="/scripts/home.js"></script>
 </body>
 </html>
