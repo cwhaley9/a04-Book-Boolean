@@ -25,7 +25,7 @@ app.get('/genre-search', async (req,res) => {
     let genre = 'GENRE PLACEHOLDER';
     let maxResults = 32;
 
-    // Note: q= filters for word or words in title
+    // Note: q= filters for specific words in title, author, subject (genre), etc.
 
     let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&printType=books&maxResults=${maxResults}&key=${key}`);
 

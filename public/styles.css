@@ -43,12 +43,27 @@ input{
 }
 
 #search-button{
+    position: absolute;
+
+    left: 960px;
     width: 40px;
     height: 40px;
-    border-radius: 100px;
+
+    background: none;
+    border: none;
+
+    background-image: url(icons/search.png);
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#search-button:hover{
+    cursor: pointer;
 }
 
 .genre-input-container{
+    position: relative;
     height: 200px;
     text-align: center;
 
