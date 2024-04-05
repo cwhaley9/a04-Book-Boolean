@@ -4,6 +4,10 @@ const path = require('path');
 
 const app = express(); // start server
 
+const swaggerUI = require('swagger-ui-express');
+const swaggerDoc = require('./swagger.json');
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc)); // setup swagger UI to test APIs
+
 const port = 3000; // listen on this port
 
 const key = 'AIzaSyA2-opOfeeNw2MItfgSrAxP9rtmmSbKYWs'; // api key for google books
@@ -20,18 +24,16 @@ app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 })
 
-app.get('/genre-search', async (req,res) => {
+app.get('/genre-search/:genre', async (req,res) => {
 
-    let genre = 'GENRE PLACEHOLDER';
+    let genre = req.params.genre;
     let maxResults = 32;
 
     // Note: q= filters for specific words in title, author, subject (genre), etc.
 
     let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&printType=books&maxResults=${maxResults}&key=${key}`);
 
-    let jsonResponse = await response.json(); // await response parsed to json
-
-    res.send(jsonResponse);
+    return res.json(response);
 })
 
 

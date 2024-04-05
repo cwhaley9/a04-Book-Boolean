@@ -25,6 +25,16 @@ function alterSearchButton(){
 
             onGenreSearch(genre);
         });
+
+
+
+
+        // TODO: Allow hitting enter instead of clicking
+
+
+
+
+
     }
     else{
         if(!searchButtonActive){
@@ -63,11 +73,31 @@ function setPlaceholder(placeholder){
     document.getElementById('book-genre').placeholder = placeholder;
 }
 
-function onGenreSearch(genre){
+async function onGenreSearch(genre){
     console.log('Genre: ' + genre);
 
-    // get results. if results == 0, display 'error' message
+    let booksJSON = []; // holds JSON of max 32 books in selected genre
 
+    // get results. if results.length == 0, display 'error' message
+
+    await fetch(`/genre-search/${genre}`).then(response => {
+        if(!response.ok){
+
+            throw new Erorr('Error: Book response not ok.'); // something went wrong with fetching the books, throw an error
+
+        } else {
     
+            return response;
+        }
+    }).then(response => {
 
+        let booksJSON = response;
+
+        if(booksJSON.length == 0){
+            console.log(`We couldn't find any books in the genre '${genre}'!`)
+        }
+        console.log(`Number of results: ${booksJSON.length}`);
+        console.log('books: ' + booksJSON[0]);
+
+    });
 }
