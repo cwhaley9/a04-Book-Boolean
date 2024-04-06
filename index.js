@@ -4,6 +4,8 @@ const path = require('path');
 
 const app = express(); // start server
 
+const axios = require('axios'); // used to fetch 3rd party api responses
+
 const swaggerUI = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 
@@ -58,13 +60,25 @@ app.get('/', (req,res) => {
 app.get('/genre-search/:genre', async (req,res) => {
 
     let genre = req.params.genre;
-    let maxResults = 32;
+    let maxResults = 2;
 
     // Note: q= filters for specific words in title, author, subject (genre), etc.
 
-    let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&printType=books&maxResults=${maxResults}&key=${key}`);
+    let response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&printType=books&maxResults=${maxResults}&key=${key}`);
 
-    return res.json(response);
+    if(response.data.totalItems == 0){ // No books exist in this genre
+        console.log('no items!');
+        return res.json([]);
+    }
+
+    if(response.status < 200 || response.status >= 300){
+
+        throw new Erorr(`Error: Response status -> ${response.status}`); // something went wrong with fetching the books, throw an error
+
+    } 
+
+    let books = response.data.items;
+    return res.json(books);
 })
 
 

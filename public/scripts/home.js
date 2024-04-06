@@ -1,3 +1,5 @@
+import alertUser from "./home-service";
+
 let genreText = document.getElementById('book-genre');
 let searchButtonActive = false;
 
@@ -57,47 +59,26 @@ function alterSearchButton(){
     }
 }
 
-// def: removes placeholder from input when in focus (when clicked on)
-function removePlaceholder(){
-    document.getElementById('book-genre').removeAttribute('placeholder');
-}
-
-/* 
-    def: sets placeholder of an input when blurred (unclicked)
-
-    parameters: 
-        - placeholder -> string
-*/
-
-function setPlaceholder(placeholder){
-    document.getElementById('book-genre').placeholder = placeholder;
-}
-
 async function onGenreSearch(genre){
     console.log('Genre: ' + genre);
 
-    let booksJSON = []; // holds JSON of max 32 books in selected genre
+    let booksJSON; // holds JSON of max 32 books in selected genre
 
     // get results. if results.length == 0, display 'error' message
 
-    await fetch(`/genre-search/${genre}`).then(response => {
-        if(!response.ok){
-
-            throw new Erorr('Error: Book response not ok.'); // something went wrong with fetching the books, throw an error
-
-        } else {
-    
-            return response;
-        }
-    }).then(response => {
-
-        let booksJSON = response;
+    await fetch(`/genre-search/${genre}`).then(async (response) => {
+        
+        booksJSON = await response.json(); 
 
         if(booksJSON.length == 0){
-            console.log(`We couldn't find any books in the genre '${genre}'!`)
+            let message = `We couldn't find any books in the genre '${genre}'!`;
+
+            alertUser(message);
         }
-        console.log(`Number of results: ${booksJSON.length}`);
-        console.log('books: ' + booksJSON[0]);
+
+        for(let book of booksJSON){
+            console.log(book.id);
+        }
 
     });
 }
