@@ -1,4 +1,4 @@
-import alertUser from "./home-service";
+import Banner from "../widgets/banner.js";
 
 let genreText = document.getElementById('book-genre');
 let searchButtonActive = false;
@@ -73,7 +73,8 @@ async function onGenreSearch(genre){
         if(booksJSON.length == 0){
             let message = `We couldn't find any books in the genre '${genre}'!`;
 
-            alertUser(message);
+            let booksNotFoundBanner = new Banner(message, 'red');
+            booksNotFoundBanner.addToPage();
         }
 
         for(let book of booksJSON){

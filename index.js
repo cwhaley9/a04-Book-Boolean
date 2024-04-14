@@ -1,13 +1,13 @@
-const express = require('express');
-//const cors = require('cors'); 
-const path = require('path');
+import express from 'express';
+
+import path from 'path';
 
 const app = express(); // start server
 
-const axios = require('axios'); // used to fetch 3rd party api responses
+import axios from 'axios'; // used to fetch 3rd party api responses
 
-const swaggerUI = require('swagger-ui-express');
-const swaggerJSDoc = require('swagger-jsdoc');
+import swaggerUI from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
 
 // Define options for swagger-jsdoc
 const options = {
@@ -73,7 +73,7 @@ app.get('/genre-search/:genre', async (req,res) => {
 
     if(response.status < 200 || response.status >= 300){
 
-        throw new Erorr(`Error: Response status -> ${response.status}`); // something went wrong with fetching the books, throw an error
+        throw new Error(`Error: Response status -> ${response.status}`); // something went wrong with fetching the books, throw an error
 
     } 
 
