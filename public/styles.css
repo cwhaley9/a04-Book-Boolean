@@ -79,8 +79,23 @@ input{
     margin: 0 auto;
 }
 
+.banner-container{
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    right: 0px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: auto;
+}
+
 .banner{
-    
+    border-radius: 100px;
+
+    padding: 10px;
 }
 
 @keyframes fadeInAnimation{
@@ -92,6 +107,33 @@ input{
         transform: translateX(0px);
         opacity: 1;
     }
+}
+
+html,body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.books-container{
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+
+    margin: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.book-container{
+    background-color: rgb(219, 219, 219);
+
+    width: 500px;
+    height: 600px;
+
+    border-radius: 50px;
 }
 
 

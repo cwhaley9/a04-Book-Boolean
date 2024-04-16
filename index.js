@@ -1,13 +1,10 @@
-import express from 'express';
-
-import path from 'path';
+const express = require('express');
+const path = require('path');
+const axios = require('axios');
+const swaggerUI = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
 
 const app = express(); // start server
-
-import axios from 'axios'; // used to fetch 3rd party api responses
-
-import swaggerUI from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
 
 // Define options for swagger-jsdoc
 const options = {
@@ -25,24 +22,20 @@ const options = {
 const specs = swaggerJSDoc(options); // initialize swaggerJSDoc
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs)); // setup swagger UI to test APIs
 
-
 const port = 3000; // listen on this port
 
 const key = 'AIzaSyA2-opOfeeNw2MItfgSrAxP9rtmmSbKYWs'; // api key for google books
 
 app.use(express.static('public')); // serve static files
+app.use(express.json());
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`);
 })
 
-app.get('/', (req,res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-})
-
 /**
  * @swagger
- * /genre-search/{genre}:
+ * /books/{genre}:
  *   get:
  *     summary: Search for books by genre
  *     description: Retrieve a list of books based on the specified genre.
@@ -57,7 +50,7 @@ app.get('/', (req,res) => {
  *       '200':
  *         description: A list of books matching the specified genre.
  */
-app.get('/genre-search/:genre', async (req,res) => {
+app.get('/books/:genre', async (req,res) => {
 
     let genre = req.params.genre;
     let maxResults = 2;
@@ -67,7 +60,6 @@ app.get('/genre-search/:genre', async (req,res) => {
     let response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&printType=books&maxResults=${maxResults}&key=${key}`);
 
     if(response.data.totalItems == 0){ // No books exist in this genre
-        console.log('no items!');
         return res.json([]);
     }
 
@@ -80,5 +72,16 @@ app.get('/genre-search/:genre', async (req,res) => {
     let books = response.data.items;
     return res.json(books);
 })
+
+app.get('/tournament', (req, res) => {
+    const filepath = path.join(__dirname, 'public', 'tournament.html');
+    console.log(filepath);
+    res.sendFile(filepath);
+});
+
+app.get('/', (req,res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+})
+
 
 

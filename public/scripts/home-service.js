@@ -13,10 +13,3 @@ function removePlaceholder(id){
 function setPlaceholder(id, placeholder){
     document.getElementById(id).placeholder = placeholder;
 }
-
-/*
-    def: create basic pop-up to display message to user. 
-
-    parameters:
-        - message -> string
-*/

@@ -1,4 +1,8 @@
 import Banner from "../widgets/banner.js";
+import { Tournament } from "../classes/tournament.js";
+import { colors } from '../models/models.js';
+
+let booksJSON = [];
 
 let genreText = document.getElementById('book-genre');
 let searchButtonActive = false;
@@ -60,26 +64,27 @@ function alterSearchButton(){
 }
 
 async function onGenreSearch(genre){
-    console.log('Genre: ' + genre);
+    // get results. if results.length == 0, display 'warning' message
 
-    let booksJSON; // holds JSON of max 32 books in selected genre
-
-    // get results. if results.length == 0, display 'error' message
-
-    await fetch(`/genre-search/${genre}`).then(async (response) => {
+    await fetch(`/books/${genre}`).then(async (response) => {
         
         booksJSON = await response.json(); 
 
         if(booksJSON.length == 0){
             let message = `We couldn't find any books in the genre '${genre}'!`;
 
-            let booksNotFoundBanner = new Banner(message, 'red');
-            booksNotFoundBanner.addToPage();
+            // no books found, alert user with banner
+            let booksNotFoundBanner = new Banner(message, colors.warning);
+            booksNotFoundBanner.addToPage()
+            booksNotFoundBanner.removeAfter(3);
+        } else {
+            beginTourney(booksJSON);
         }
-
-        for(let book of booksJSON){
-            console.log(book.id);
-        }
-
     });
+}
+
+async function beginTourney(booksJSON) {
+    window.location.href = '/tournament';
+    console.log(booksJSON);
+    let tournament = new Tournament(booksJSON);
 }
