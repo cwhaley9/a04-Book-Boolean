@@ -78,13 +78,23 @@ async function onGenreSearch(genre){
             booksNotFoundBanner.addToPage()
             booksNotFoundBanner.removeAfter(3);
         } else {
-            beginTourney(booksJSON);
+            const response = await fetch('/tournament');
+            if(!response.ok){
+                throw new Error("Can't fetch tournament page!");
+            } else {
+                const tournamentHTML = await response.text();
+                document.body.innerHTML = tournamentHTML;
+                beginTourney(booksJSON);
+            }
         }
     });
 }
 
 async function beginTourney(booksJSON) {
-    window.location.href = '/tournament';
+
     console.log(booksJSON);
     let tournament = new Tournament(booksJSON);
+    tournament.simulateTournament();
+
 }
+

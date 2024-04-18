@@ -9,6 +9,6 @@ const nextRound = {
     'sweet16': 'elite8',
     'elite8': 'final4',
     'final4': 'championship',
-    'championship': 'complete'
+    'championship': 'tournament_over'
 }
 export { colors, nextRound }

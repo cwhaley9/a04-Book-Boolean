@@ -24,7 +24,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs)); // setup swagger 
 
 const port = 3000; // listen on this port
 
-const key = 'AIzaSyA2-opOfeeNw2MItfgSrAxP9rtmmSbKYWs'; // api key for google books
+const key = 'AIzaSyA2-opOfeeNw2MItfgSrAxP9rtmmSbKYWs'; // api key for google books and GIFs
 
 app.use(express.static('public')); // serve static files
 app.use(express.json());
@@ -50,10 +50,12 @@ app.listen(port, () => {
  *       '200':
  *         description: A list of books matching the specified genre.
  */
+
+// This is my 1st 3rd-party API
 app.get('/books/:genre', async (req,res) => {
 
     let genre = req.params.genre;
-    let maxResults = 2;
+    let maxResults = 32;
 
     // Note: q= filters for specific words in title, author, subject (genre), etc.
 
@@ -73,9 +75,20 @@ app.get('/books/:genre', async (req,res) => {
     return res.json(books);
 })
 
+// This is my 2nd 3rd-party API
+app.get('/random-gif', async (req, res) => {
+    let response = await axios.get(`https://tenor.googleapis.com/v2/search?q=celebration&key=${key}&limit=50`);
+    let responseResults = response.data.results;
+    
+    let randomInt = Math.floor(Math.random() * responseResults.length)
+    let randomGif = responseResults[randomInt].media_formats.gif;
+
+    console.log(randomGif);
+    res.json(randomGif);
+})
+
 app.get('/tournament', (req, res) => {
     const filepath = path.join(__dirname, 'public', 'tournament.html');
-    console.log(filepath);
     res.sendFile(filepath);
 });
 
